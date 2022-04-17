@@ -19,10 +19,10 @@ class CalculatorButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(7),
       child: SizedBox(
-        height: 70,
-        width: 70,
+        height: 75,
+        width: 75,
         child: TextButton(
           child: Text(
             text,
@@ -36,7 +36,7 @@ class CalculatorButton extends StatelessWidget {
           style: TextButton.styleFrom(
             backgroundColor: Color(fillColor),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(6),
             ),
           ),
           onPressed: () => callback(text),

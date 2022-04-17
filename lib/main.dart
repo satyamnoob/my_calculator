@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import './widgets/calculator_button.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const MyCalculatorApp());
 }
 
@@ -17,8 +22,8 @@ class MyCalculatorApp extends StatefulWidget {
 class _MyCalculatorAppState extends State<MyCalculatorApp> {
   String result = '';
   String argument = '';
-  int firstNum = 0;
-  int secondNum = 0;
+  double firstNum = 0;
+  double secondNum = 0;
 
   void _typedText(String text) {
     if (text == 'AC') {
@@ -31,6 +36,12 @@ class _MyCalculatorAppState extends State<MyCalculatorApp> {
     } else if (text == '<') {
       setState(() {
         argument = argument.substring(0, argument.length - 1);
+      });
+    } else if (text == '+/-') {
+      setState(() {
+        argument = (argument[0] == '-')
+            ? argument = argument.substring(1)
+            : '-' + argument;
       });
     } else if (text == '==') {
       bool flag = false;
@@ -53,41 +64,47 @@ class _MyCalculatorAppState extends State<MyCalculatorApp> {
           num1 += argument[i];
         }
       }
-      firstNum = int.parse(num1);
-      secondNum = int.parse(num2);
+      firstNum = double.parse(num1);
+      secondNum = double.parse(num2);
       if (operation == '+') {
         setState(() {
           result = argument;
-          argument = (firstNum + secondNum).toString();
+          argument = (firstNum + secondNum).toStringAsFixed(1);
+          if (argument.substring(argument.length - 2) == '.0') {
+            argument = argument.substring(0, argument.length - 2);
+          }
         });
       } else if (operation == '/') {
-        String withoutDecimal = '';
         setState(() {
           result = argument;
-          argument = (firstNum / secondNum).toString();
-          for (var i = 0; i < argument.length; i++) {
-            if (argument[i] == '.') {
-              break;
-            } else {
-              withoutDecimal += argument[i];
-            }
+          argument = (firstNum / secondNum).toStringAsFixed(1);
+          if (argument.substring(argument.length - 2) == '.0') {
+            argument = argument.substring(0, argument.length - 2);
           }
-          argument = withoutDecimal;
         });
       } else if (operation == 'X') {
         setState(() {
           result = argument;
-          argument = (firstNum * secondNum).toString();
+          argument = (firstNum * secondNum).toStringAsFixed(1);
+          if (argument.substring(argument.length - 2) == '.0') {
+            argument = argument.substring(0, argument.length - 2);
+          }
         });
       } else if (operation == '-') {
         setState(() {
           result = argument;
-          argument = (firstNum - secondNum).toString();
+          argument = (firstNum - secondNum).toStringAsFixed(1);
+          if (argument.substring(argument.length - 2) == '.0') {
+            argument = argument.substring(0, argument.length - 2);
+          }
         });
       } else {
         setState(() {
           result = argument;
-          argument = (firstNum % secondNum).toString();
+          argument = (firstNum % secondNum).toStringAsFixed(1);
+          if (argument.substring(argument.length - 2) == '.0') {
+            argument = argument.substring(0, argument.length - 2);
+          }
         });
       }
     } else {
@@ -114,7 +131,7 @@ class _MyCalculatorAppState extends State<MyCalculatorApp> {
             children: [
               Container(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 12),
+                  padding: const EdgeInsets.only(right: 16),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Text(
@@ -130,8 +147,9 @@ class _MyCalculatorAppState extends State<MyCalculatorApp> {
                 ),
               ),
               Container(
+                margin: const EdgeInsets.only(bottom: 5),
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 12),
+                  padding: const EdgeInsets.only(right: 15),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Text(
@@ -153,7 +171,7 @@ class _MyCalculatorAppState extends State<MyCalculatorApp> {
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 22,
+                    fontSize: 25,
                   ),
                   CalculatorButton(
                     text: '%',
@@ -185,28 +203,28 @@ class _MyCalculatorAppState extends State<MyCalculatorApp> {
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: '8',
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: '7',
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: 'X',
                     fillColor: 0xFFf4d160,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                 ],
               ),
@@ -217,28 +235,28 @@ class _MyCalculatorAppState extends State<MyCalculatorApp> {
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: '5',
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: '4',
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: '-',
                     fillColor: 0xFFf4d160,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 22,
+                    fontSize: 23,
                   ),
                 ],
               ),
@@ -249,28 +267,28 @@ class _MyCalculatorAppState extends State<MyCalculatorApp> {
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: '2',
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: '1',
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: '+',
                     fillColor: 0xFFf4d160,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                 ],
               ),
@@ -281,28 +299,28 @@ class _MyCalculatorAppState extends State<MyCalculatorApp> {
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: '0',
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: '00',
                     fillColor: 0xFF8ac4d0,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                   CalculatorButton(
                     text: '==',
                     fillColor: 0xFFf4d160,
                     textColor: 0xFF000000,
                     callback: _typedText,
-                    fontSize: 18,
+                    fontSize: 23,
                   ),
                 ],
               ),
