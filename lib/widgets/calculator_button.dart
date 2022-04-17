@@ -36,7 +36,7 @@ class CalculatorButton extends StatelessWidget {
           style: TextButton.styleFrom(
             backgroundColor: Color(fillColor),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(3),
             ),
           ),
           onPressed: () => callback(text),
